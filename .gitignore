@@ -1,0 +1,30 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*secret*
+*token*
+*credential*
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# Build and runtime output
+build/
+dist/
+*.egg-info/
+*.log
+tmp/
+temp/
+
+# Editor and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

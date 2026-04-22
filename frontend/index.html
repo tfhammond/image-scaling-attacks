@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Scaling Prompt Injection Attacks Project</title>
+    <link rel="stylesheet" href="/frontend/styles.css">
+</head>
+<body>
+    <main class="app-shell">
+        <header class="hero">
+            <p class="eyebrow">Reduced Workflow</p>
+            <h1>Build an adversarial image in one pass.</h1>
+            <p class="hero-copy">
+                Preview the target text, upload a square decoy image, choose a method,
+                then generate the target, adversarial, and downsampled outputs.
+            </p>
+        </header>
+
+        <section class="status-banner" id="loading" hidden aria-live="polite">
+            Working...
+        </section>
+
+        <section class="status-banner error-banner" id="error" hidden aria-live="polite">
+            <span id="errorMessage"></span>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <p class="step-label">Step 1</p>
+                <h2>Configure the target text</h2>
+            </div>
+
+            <div class="field-stack">
+                <label class="field">
+                    <span>Text</span>
+                    <textarea
+                        id="textInput"
+                        rows="5"
+                        placeholder="Enter the text you want to hide inside the image."
+                    >Sample Text</textarea>
+                </label>
+
+                <div class="field-grid">
+                    <label class="field">
+                        <span>Font size</span>
+                        <input id="fontSizeInput" type="number" min="20" max="64" step="1" value="32">
+                    </label>
+
+                    <label class="field">
+                        <span>Alignment</span>
+                        <select id="alignmentInput">
+                            <option value="center" selected>Center</option>
+                            <option value="top">Top</option>
+                            <option value="bottom">Bottom</option>
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                            <option value="top-left">Top Left</option>
+                            <option value="top-right">Top Right</option>
+                            <option value="bottom-left">Bottom Left</option>
+                            <option value="bottom-right">Bottom Right</option>
+                        </select>
+                    </label>
+                </div>
+
+                <div class="action-row">
+                    <button id="previewButton" class="button button-secondary" type="button">
+                        Preview Text
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel preview-panel" id="previewPanel" hidden>
+            <div class="panel-heading">
+                <p class="step-label">Preview</p>
+                <h2>Text preview</h2>
+            </div>
+
+            <div class="preview-layout">
+                <div class="image-card">
+                    <div class="image-card-header">
+                        <h3>Preview Image</h3>
+                        <p id="previewSize">1092x1092</p>
+                    </div>
+                    <img id="previewImage" alt="Generated text preview">
+                </div>
+
+                <div class="info-card">
+                    <h3>Preview status</h3>
+                    <p id="previewStatus">The backend will render the preview at the default size.</p>
+                    <p id="previewWarning" class="warning-text" hidden>
+                        Text overflow warning
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <p class="step-label">Step 2</p>
+                <h2>Upload a decoy image</h2>
+            </div>
+
+            <div class="field-stack">
+                <label class="field">
+                    <span>Decoy image</span>
+                    <input id="decoyInput" type="file" accept="image/*">
+                </label>
+                <p class="helper-text">
+                    The image must be square and its width must be divisible by 4.
+                </p>
+                <p class="upload-status" id="uploadStatus">No image selected.</p>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-heading">
+                <p class="step-label">Step 3</p>
+                <h2>Choose the generation method</h2>
+            </div>
+
+            <div class="field-grid">
+                <label class="field">
+                    <span>Method</span>
+                    <select id="methodInput">
+                        <option value="bicubic" selected>Bicubic</option>
+                        <option value="bilinear">Bilinear</option>
+                        <option value="nearest">Nearest</option>
+                    </select>
+                </label>
+
+                <label class="field">
+                    <span>Lambda</span>
+                    <input id="lamInput" type="number" min="0" max="10" step="0.01" value="0.25">
+                </label>
+
+                <label class="field">
+                    <span>Epsilon</span>
+                    <input id="epsInput" type="number" min="0" max="1" step="0.01" value="0.0">
+                </label>
+
+                <label class="field">
+                    <span>Gamma</span>
+                    <input id="gammaInput" type="number" min="0.1" max="3" step="0.1" value="1.0">
+                </label>
+
+                <label class="field" id="offsetField" hidden>
+                    <span>Offset</span>
+                    <input id="offsetInput" type="number" min="0" max="3" step="1" value="2">
+                </label>
+
+                <label class="field" id="darkFracField">
+                    <span>Dark fraction</span>
+                    <input id="darkFracInput" type="number" min="0" max="1" step="0.01" value="0.3">
+                </label>
+
+                <label class="field" id="antiAliasField" hidden>
+                    <span>Anti-alias</span>
+                    <input id="antiAliasInput" type="checkbox">
+                </label>
+            </div>
+
+            <div class="action-row">
+                <button id="generateButton" class="button button-primary" type="button" disabled>
+                    Generate
+                </button>
+            </div>
+        </section>
+
+        <section class="panel results-panel" id="resultsPanel" hidden>
+            <div class="panel-heading">
+                <p class="step-label">Results</p>
+                <h2>Generated images</h2>
+            </div>
+
+            <div class="result-meta">
+                <p id="resultSummary">Method summary</p>
+                <p id="resultParameters">Parameter summary</p>
+            </div>
+
+            <div class="result-grid">
+                <article class="image-card">
+                    <div class="image-card-header">
+                        <h3>Target Text</h3>
+                        <p id="targetSize">Target size</p>
+                    </div>
+                    <div class="image-stage" id="targetStage">
+                        <img id="targetImage" alt="Target text image">
+                    </div>
+                </article>
+
+                <article class="image-card">
+                    <div class="image-card-header">
+                        <h3>Adversarial Image</h3>
+                        <p id="adversarialSize">Adversarial size</p>
+                    </div>
+                    <div class="image-stage" id="adversarialStage">
+                        <img id="adversarialImage" alt="Generated adversarial image">
+                    </div>
+                </article>
+
+                <article class="image-card">
+                    <div class="image-card-header">
+                        <h3>Downsampled Image</h3>
+                        <p id="downsampledSize">Downsampled size</p>
+                    </div>
+                    <div class="image-stage" id="downsampledStage">
+                        <img id="downsampledImage" alt="Downsampled generated image">
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="/frontend/script.js"></script>
+</body>
+</html>
