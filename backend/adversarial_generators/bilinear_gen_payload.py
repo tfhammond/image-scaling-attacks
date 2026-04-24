@@ -8,6 +8,8 @@ import cv2
 import numpy as np
 import numpy.typing as npt
 
+"""Payload generator adapted from the Anamorpher project backend."""
+
 ImageF32 = npt.NDArray[np.float32]
 VecF32 = npt.NDArray[np.float32]
 

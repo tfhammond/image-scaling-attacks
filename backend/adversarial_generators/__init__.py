@@ -1,1 +1,1 @@
-"""Adversarial generator scripts retained for the reduced backend."""
+"""Adversarial generator scripts adapted from the Anamorpher project backend."""

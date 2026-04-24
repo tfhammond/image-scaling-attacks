@@ -7,6 +7,8 @@ import numpy as np
 import numpy.typing as npt
 from PIL import Image
 
+"""Payload generator adapted from the Anamorpher project backend."""
+
 # ---------------------------------------------------------------------------
 # Types
 ImageF32 = npt.NDArray[np.float32]

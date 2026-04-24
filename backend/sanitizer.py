@@ -5,6 +5,8 @@ from typing import overload
 import bleach
 from markupsafe import escape
 
+"""input sanitization utilities"""
+
 # Allowed characters for text input
 ALLOWED_TEXT_CHARS = re.compile(r'^[a-zA-Z0-9\s@.,!?;:()"\'-]+$')
 
