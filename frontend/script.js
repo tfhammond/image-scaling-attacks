@@ -231,9 +231,9 @@ async function handleDecoyUpload(event) {
         return;
     }
 
-    if (!file.type.startsWith("image/")) {
+    if (file.type !== "image/png" && !file.name.toLowerCase().endsWith(".png")) {
         resetDecoyState("No image selected.");
-        showError("Please choose a valid image file.");
+        showError("Please choose a PNG image file.");
         event.target.value = "";
         return;
     }

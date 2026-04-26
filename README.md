@@ -2,14 +2,7 @@
 
 ## Background: Downscaling And Image Scaling
 
-TODO: Gonna this section.
-
-Use this section to explain:
-
-- what downscaling is
-- how image resizing changes pixel information
-- why different downsampling algorithms can produce different results
-- how image scaling behavior can be used to reveal hidden information
+Image scaling is the process of resizing an image from one resolution to another, often through downsampling methods such as nearest-neighbor, bilinear, or bicubic interpolation. Because these methods combine and transform pixel information in different ways, the visual content of an image can change when it is resized. This project explores how those resizing behaviors can be exploited to create adversarial images that appear benign at full resolution but reveal hidden content after downsampling.
 
 ## Credits
 
@@ -91,7 +84,7 @@ The backend is a Flask app. It serves the frontend and handles image generation.
 1. Enter the text you want to hide.
 2. Choose a font size and alignment.
 3. Click `Preview Text`.
-4. Upload a square image.
+4. Upload a square PNG image.
 5. Choose `nearest`, `bicubic`, or `bilinear`.
 6. Adjust the method parameters.
 7. Click `Generate`.
@@ -100,8 +93,8 @@ The backend is a Flask app. It serves the frontend and handles image generation.
    - full adversarial image
    - downsampled image
 
-The uploaded decoy image must be square, and its width must be divisible by 4.
-The larger the image, the better.
+The uploaded decoy image must be a PNG, it must be square, and its width must be divisible by 4.
+Larger images may provide more room for embedding, depending on the method and the decoy image content.
 
 For example:
 

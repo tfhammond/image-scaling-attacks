@@ -65,7 +65,7 @@ img {
 }
 
 .hero h1 {
-    max-width: 12ch;
+    max-width: 18ch;
     font-size: clamp(2.2rem, 5vw, 4rem);
     line-height: 0.95;
     letter-spacing: -0.03em;
