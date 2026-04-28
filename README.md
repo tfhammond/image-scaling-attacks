@@ -6,9 +6,12 @@ Image scaling is the process of resizing an image from one resolution to another
 
 ## Credits
 
-https://blog.trailofbits.com/2025/08/21/weaponizing-image-scaling-against-production-ai-systems/
+source: https://blog.trailofbits.com/2025/08/21/weaponizing-image-scaling-against-production-ai-systems/
 
-downsampling backend adapted from https://github.com/trailofbits/anamorpher
+The core adversarial generation algorithms (nearest, bilinear, bicubic) are reused directly from the Anamorpher project:
+https://github.com/trailofbits/anamorpher
+
+These algorithms were not reimplemented. This project focuses on building a full-stack application, API, and visualization system around that existing backend.
 
 ## What This Project Does
 
@@ -84,7 +87,7 @@ The backend is a Flask app. It serves the frontend and handles image generation.
 1. Enter the text you want to hide.
 2. Choose a font size and alignment.
 3. Click `Preview Text`.
-4. Upload a square PNG image.
+4. Upload a square image.
 5. Choose `nearest`, `bicubic`, or `bilinear`.
 6. Adjust the method parameters.
 7. Click `Generate`.
@@ -93,8 +96,8 @@ The backend is a Flask app. It serves the frontend and handles image generation.
    - full adversarial image
    - downsampled image
 
-The uploaded decoy image must be a PNG, it must be square, and its width must be divisible by 4.
-Larger images may provide more room for embedding, depending on the method and the decoy image content.
+The uploaded decoy image must be square, and its width must be divisible by 4.
+The larger the image, the better.
 
 For example:
 
